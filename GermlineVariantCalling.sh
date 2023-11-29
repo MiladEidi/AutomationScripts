@@ -20,7 +20,7 @@ threads=16
 
 #Samtools commands
 samtools view -b -@"$threads" -q 10 -F 4 -o "$file_path/${file_name_no_extension}.bam"  "$input" || { echo "Samtools command failed."; exit 1; }
-#samtools sort -@"$threads" -m 1000M -n -o "$file_path/${file_name_no_extension}_Sorted.bam" "$file_path/${file_name_no_extension}.bam" || { echo "Samtools sorting failed."; exit 1; }
+#samtools sort -@"$threads" -m 1000M -o "$file_path/${file_name_no_extension}_Sorted.bam" "$file_path/${file_name_no_extension}.bam" || { echo "Samtools sorting failed."; exit 1; }
 java -jar "$gatk" SortSam -I "$file_path/${file_name_no_extension}.bam" -O "$file_path/${file_name_no_extension}_Sorted.bam" -SO coordinate || { echo "SortSam sorting failed."; exit 1; }
 # GATK commands
 java -jar "$gatk" AddOrReplaceReadGroups -I "$file_path/${file_name_no_extension}_Sorted.bam" -O "$file_path/${file_name_no_extension}_Sorted_RG.bam" -PL Illumina -LB TwistWES -PU Unit1 -SM patient || { echo "GATK AddOrReplaceReadGroups failed."; exit 1; }
