@@ -1,4 +1,5 @@
 /**
+ * Using this code you would be able to subset the huge VCF file into the certain subsets...Hope it helps...
  * @author Milad
  */
 
