@@ -1,5 +1,8 @@
 #!/usr/bin/bash
 
+###Some modifications need to be done on this script, be careful to use this...
+###Calling variants on normal set should be done based on germline variant calling pipeline
+
 echo "#########AD Bioinformatics presents#########"
 echo "##########www.adbioinformatics.net##########"
 echo "#################2023 Dec###################"
