@@ -32,7 +32,7 @@ file_path=$(dirname -- "$fq1_pair")
 echo "###############################"
 echo "Step1: Aligning FASTQ reads using Hisat2 and filtering unmapped and multimapped reads while converting SAM to BAM..."
 echo "###############################"
-${hisat2_dir}/hisat2-align-s -t --add-chrname -p ${threads} -x ${hisat2_Index} -1 ${fq1_pair} -2 ${fq2_pair} -U ${fq1_unpair},${fq2_unpair} | samtools view -@ ${threads} -b -q 10 -F 4 -o "$file_path/align.bam" || { echo "Hisat2 alignment failed."; exit 1; }
+${hisat2_dir}/hisat2 -t --add-chrname -p ${threads} -x ${hisat2_Index} -1 ${fq1_pair} -2 ${fq2_pair} -U ${fq1_unpair},${fq2_unpair} | samtools view -@ ${threads} -b -q 10 -F 4 -o "$file_path/align.bam" || { echo "Hisat2 alignment failed."; exit 1; }
 
 echo "###############################"
 echo "Step2: Sorting the BAM file..."
