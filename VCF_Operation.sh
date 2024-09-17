@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Function to display usage information
 usage() {
-  echo "Usage: $0 <vcfFile> <outputPrefix> <refFASTA> <bed> <annovarFolder> <annovardbFolder> <refBuild> [protocol] [operation]"
+  echo "Usage: $0 <vcfFile> <outputPrefix> <refFASTA> <bed> <annovarFolder> <annovardbFolder> <refBuild> <thread> [protocol] [operation]"
   echo "  vcfFile:         Input VCF file"
   echo "  outputPrefix:    Prefix for output files"
   echo "  refFASTA:        Reference FASTA file"
