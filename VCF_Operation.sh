@@ -75,7 +75,7 @@ main() {
   bcftools view -G -Ou "${filteredVcf}" | bcftools annotate -x FORMAT/GT,^INFO/AC -o "${vcfPlain}"
   
   # Annotation using ANNOVAR
-  "${annovarFolder}/table_annovar.pl" -thread "${thread}" "${vcfPlain}" "${annovardbFolder}" -buildver "${refBuild}" -out "${outputPrefix}.annovar" \
+  "${annovarFolder}/table_annovar.pl" "${vcfPlain}" "${annovardbFolder}" -thread "${thread}" -buildver "${refBuild}" -out "${outputPrefix}.annovar" \
   -remove -protocol "${protocol}" -operation "${operation}" \
   -nastring . -vcfinput > "${outputPrefix}.annovar.log"
   
@@ -111,9 +111,9 @@ main() {
         "${outputPrefix}.annovar.${refBuild}_multianno.txt" \
         "${outputPrefix}.annovar.avinput"
         
-        
-        
-        
+
+#BCFtools filtering command can be added here...
+
 }
 
 # Call the main function
