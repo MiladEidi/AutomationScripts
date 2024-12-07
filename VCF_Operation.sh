@@ -92,6 +92,9 @@ main() {
          -e '/^##INFO=<ID=CADD/s/Type=String/Type=Float/' \
          -e '/^##INFO=<ID=REVEL/s/Type=String/Type=Float/' \
 	 -e '/^##INFO=<ID=DANN_score/s/Type=String/Type=Float/' \
+   	 -e '/^##INFO=<ID=GME_AF/s/Type=String/Type=Float/' \
+   	 -e '/^##INFO=<ID=abraom_freq/s/Type=String/Type=Float/' \
+         -e '/^##INFO=<ID=DANN_score/s/Type=String/Type=Float/' \
 	 -e 's/Eigen-/Eigen_/g' \
          -e 's/GERP++/GERPpp/g' \
          -e 's/PC-/PC_/g' \
