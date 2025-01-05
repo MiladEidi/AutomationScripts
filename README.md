@@ -4,5 +4,5 @@ In this repo, I usually upload scripts that are not complex but make some tasks 
 
 If you have any problem there, let me know through my mail: milad.eidi@affiliate.mcgill.ca
 
-Best wishes from Persia,
+Best,
 Milad
