@@ -88,26 +88,11 @@ tabix -p vcf "$file_path/Patient_merged.vcf.gz"
 echo "###############################"
 echo "Step10: Hard filtering..."
 echo "###############################"
-java -jar "$gatk" VariantFiltration --verbosity ERROR \
-   -R "$fasta_Ref" \
-   -V "$file_path/Patient_merged.vcf.gz" \
-   -O "$file_path/Patient_HardFiltered.vcf" \
-   -L "$bed_for_hardfiltering" \
-   #--filter-expression "QUAL < 20.0" --filter-name "LowQual" \
-   #--filter-expression "QD < 2.0" --filter-name "LowQD" \
-   #--filter-expression "DP < 0" --filter-name "DepthFilter" \
-   #--filter-expression "MQ < 40.0" --filter-name "LowMQ" \
-   #--filter-expression "MQRankSum < -12.5" --filter-name "LowMQRankSum" \
-   #--filter-expression "ReadPosRankSum < -8.0 || ReadPosRankSum > 8.0" --filter-name "ReadPosRankSumFilter" \
-   #--filter-expression "FS > 60.0" --filter-name "StrandBias" \
-   #--filter-expression "BaseQRankSum < -8.0" --filter-name "LowBaseQRankSum" \
-   || { echo "GATK VariantFiltration failed."; exit 1; }
+bcftools filter -R "$bed_for_hardfiltering" \
+   -Oz \
+   -o "$file_path/Patient_merged_HF.vcf.gz"  \
+  "$file_path/Patient_merged.vcf.gz"
 
-java -jar "$gatk" SelectVariants --verbosity ERROR \
-    -R "$fasta_Ref" \
-    -V "$file_path/Patient_HardFiltered.vcf" \
-    -O "$file_path/Patient_HardFiltered_removed.vcf" \
-    --exclude-filtered || { echo "GATK SelectVariants failed."; exit 1; }
 
 echo "###############################"
 echo "###############################"
