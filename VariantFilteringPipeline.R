@@ -78,8 +78,8 @@ Variants1 <- filter_AF_more(Variants1, "REVEL", threshold = 0.3)
 # Generate output file name
 input_base <- tools::file_path_sans_ext(basename(input_file))
 output_dir <- dirname(input_file)
-output_file <- file.path(output_dir, paste0(input_base, "_filtered.csv"))
+output_file <- file.path(output_dir, paste0(input_base, "_filtered.tsv"))
 # Write Output
-write.csv(Variants1, file = output_file, quote = FALSE, row.names = FALSE)
+write.table(Variants1, file = output_file, quote = FALSE, row.names = FALSE, sep = "\t")
 
 cat("✅ Filtering done!\n📄 Output file:", output_file, "\n")
