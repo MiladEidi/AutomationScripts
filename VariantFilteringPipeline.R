@@ -14,7 +14,7 @@ if (length(args) != 1) {
 input_file <- args[1]
 cat("✅ Filtering Started...\n📄 Input file:", input_file, "\n")
 # Load Data
-Variants <- read.delim(file = "/media/milad/9117284696_AD/Tohid/Milad/L6632.annotated.hg38_multianno.txt", header = TRUE, sep = "\t", stringsAsFactors = FALSE)
+Variants <- read.delim(file = input_file, header = TRUE, sep = "\t", stringsAsFactors = FALSE)
 cat("✅ Reading input file finished!\n")
 # Helper to safely convert to numeric and filter based on threshold
 filter_AF_less <- function(df, colname, threshold = 0.05) {
