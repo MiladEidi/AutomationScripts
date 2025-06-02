@@ -14,23 +14,34 @@ if (length(args) != 1) {
 input_file <- args[1]
 cat("✅ Filtering Started...\n📄 Input file:", input_file, "\n")
 # Load Data
-Variants <- read.delim(file = input_file, header = TRUE, sep = "\t", stringsAsFactors = FALSE)
+Variants <- read.delim(file = "/media/milad/9117284696_AD/Tohid/Milad/L6632.annotated.hg38_multianno.txt", header = TRUE, sep = "\t", stringsAsFactors = FALSE)
 cat("✅ Reading input file finished!\n")
 # Helper to safely convert to numeric and filter based on threshold
-filter_AF <- function(df, colname, threshold = 0.05) {
+filter_AF_less <- function(df, colname, threshold = 0.05) {
+    if (!colname %in% names(df)) {
+      warning(paste("Column", colname, "not found in the data frame. Function skipped."))
+      return(df) 
+    }
   df[is.na(df[[colname]]) | df[[colname]] == "." | suppressWarnings(as.numeric(df[[colname]])) <= threshold, ]
+}
+filter_AF_more <- function(df, colname, threshold = 0.05) {
+  if (!colname %in% names(df)) {
+    warning(paste("Column", colname, "not found in the data frame. Function skipped."))
+    return(df) 
+  }
+  df[is.na(df[[colname]]) | df[[colname]] == "." | suppressWarnings(as.numeric(df[[colname]])) >= threshold, ]
 }
 
 # Stepwise Filtering
 Variants1 <- subset(Variants, !grepl("benign", CLNSIG, ignore.case = TRUE))
-Variants1 <- filter_AF(Variants1, "X1000g2015aug_all")
-Variants1 <- filter_AF(Variants1, "gnomad40_exome_AF")
-Variants1 <- filter_AF(Variants1, "gnomad40_genome_AF")
-Variants1 <- filter_AF(Variants1, "Kaviar_AF")
-Variants1 <- filter_AF(Variants1, "esp6500siv2_all")
-Variants1 <- filter_AF(Variants1, "GME_AF", threshold = 0.1)
-Variants1 <- filter_AF(Variants1, "HRC_AF")
-Variants1 <- filter_AF(Variants1, "Iranome_AF", threshold = 0.1)
+Variants1 <- filter_AF_less(Variants1, "X1000g2015aug_all")
+Variants1 <- filter_AF_less(Variants1, "gnomad40_exome_AF")
+Variants1 <- filter_AF_less(Variants1, "gnomad40_genome_AF")
+Variants1 <- filter_AF_less(Variants1, "Kaviar_AF")
+Variants1 <- filter_AF_less(Variants1, "esp6500siv2_all")
+Variants1 <- filter_AF_less(Variants1, "GME_AF", threshold = 0.1)
+Variants1 <- filter_AF_less(Variants1, "HRC_AF")
+Variants1 <- filter_AF_less(Variants1, "Iranome_AF", threshold = 0.1)
 
 # Functional Annotation Filters
 Variants1 <- subset(Variants1,
@@ -48,8 +59,8 @@ Variants1 <- subset(Variants1,
 # Interpretation & Prediction Score Filters
 Variants1 <- subset(Variants1, !grepl("benign", InterVar_automated, ignore.case = TRUE))
 
-Variants1 <- filter_AF(Variants1, "DANN_score", threshold = 0.80)
-Variants1 <- filter_AF(Variants1, "REVEL", threshold = 0.30)
+Variants1 <- filter_AF_more(Variants1, "DANN_score", threshold = 0.75)
+Variants1 <- filter_AF_more(Variants1, "REVEL", threshold = 0.25)
 
 # Generate output file name
 input_base <- tools::file_path_sans_ext(basename(input_file))
