@@ -8,7 +8,7 @@ args <- commandArgs(trailingOnly = TRUE)
 
 # Input validation
 if (length(args) != 1) {
-  stop("Usage: Rscript filter_variants.R <input_file>")
+  stop("Usage: Rscript filter_variants.R <tab-delimitted annovar annotated variants>")
 }
 
 input_file <- args[1]
@@ -28,7 +28,7 @@ Variants1 <- filter_AF(Variants1, "gnomad40_exome_AF")
 Variants1 <- filter_AF(Variants1, "gnomad40_genome_AF")
 Variants1 <- filter_AF(Variants1, "Kaviar_AF")
 Variants1 <- filter_AF(Variants1, "esp6500siv2_all")
-Variants1 <- filter_AF(Variants1, "GME_AF")
+Variants1 <- filter_AF(Variants1, "GME_AF", threshold = 0.1)
 Variants1 <- filter_AF(Variants1, "HRC_AF")
 Variants1 <- filter_AF(Variants1, "Iranome_AF", threshold = 0.1)
 
@@ -37,12 +37,6 @@ Variants1 <- subset(Variants1,
   grepl("exonic|splicing", Func_refGeneWithVer, ignore.case = TRUE) |
   grepl("exonic|splicing", Func_ensGene, ignore.case = TRUE) |
   grepl("exonic|splicing", Func_knownGene, ignore.case = TRUE)
-)
-
-Variants1 <- subset(Variants1,
-  !grepl("ncRNA", Func_refGeneWithVer, ignore.case = TRUE) &
-  !grepl("ncRNA", Func_ensGene, ignore.case = TRUE) &
-  !grepl("ncRNA", Func_knownGene, ignore.case = TRUE)
 )
 
 Variants1 <- subset(Variants1,
