@@ -46,6 +46,7 @@ filter_AF_more <- function(df, colname, threshold = 0.05) {
 
 # Stepwise Filtering
 Variants1 <- subset(Variants, !grepl("benign", CLNSIG, ignore.case = TRUE))
+Variants1 <- filter_AF_less(Variants1, "gvs_all_af")
 Variants1 <- filter_AF_less(Variants1, "X1000g2015aug_all")
 Variants1 <- filter_AF_less(Variants1, "gnomad40_exome_AF")
 Variants1 <- filter_AF_less(Variants1, "gnomad40_genome_AF")
@@ -71,8 +72,8 @@ Variants1 <- subset(Variants1,
 # Interpretation & Prediction Score Filters
 Variants1 <- subset(Variants1, !grepl("benign", InterVar_automated, ignore.case = TRUE))
 
-Variants1 <- filter_AF_more(Variants1, "DANN_score", threshold = 0.75)
-Variants1 <- filter_AF_more(Variants1, "REVEL", threshold = 0.25)
+Variants1 <- filter_AF_more(Variants1, "DANN_score", threshold = 0.8)
+Variants1 <- filter_AF_more(Variants1, "REVEL", threshold = 0.3)
 
 # Generate output file name
 input_base <- tools::file_path_sans_ext(basename(input_file))
