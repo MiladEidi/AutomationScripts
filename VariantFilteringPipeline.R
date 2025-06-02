@@ -16,20 +16,32 @@ cat("✅ Filtering Started...\n📄 Input file:", input_file, "\n")
 # Load Data
 Variants <- read.delim(file = input_file, header = TRUE, sep = "\t", stringsAsFactors = FALSE)
 cat("✅ Reading input file finished!\n")
+# A function to read allele frequencies safely
+parse_af <- function(x) {
+  x_clean <- trimws(x)
+  x_clean[x_clean %in% c("", ".")] <- NA              # explicit missings
+  v <- strsplit(x_clean, "[,;|]")                     # multi-allelic or sub-pop
+  sapply(v, function(z) {
+    z_num <- suppressWarnings(as.numeric(z))
+    if (all(is.na(z_num))) NA else max(z_num, na.rm = TRUE)
+  })
+}
+
 # Helper to safely convert to numeric and filter based on threshold
 filter_AF_less <- function(df, colname, threshold = 0.05) {
-    if (!colname %in% names(df)) {
-      warning(paste("Column", colname, "not found in the data frame. Function skipped."))
-      return(df) 
-    }
-  df[is.na(df[[colname]]) | df[[colname]] == "." | suppressWarnings(as.numeric(df[[colname]])) <= threshold, ]
+  if (!colname %in% names(df)) {
+    warning(sprintf("Column %s not found – skipped.", colname)); return(df)
+  }
+  af <- parse_af(df[[colname]])
+  df[is.na(af) | af <= threshold, , drop = FALSE]
 }
+
 filter_AF_more <- function(df, colname, threshold = 0.05) {
   if (!colname %in% names(df)) {
-    warning(paste("Column", colname, "not found in the data frame. Function skipped."))
-    return(df) 
+    warning(sprintf("Column %s not found – skipped.", colname)); return(df)
   }
-  df[is.na(df[[colname]]) | df[[colname]] == "." | suppressWarnings(as.numeric(df[[colname]])) >= threshold, ]
+  af <- parse_af(df[[colname]])
+  df[!is.na(af) & af >= threshold, , drop = FALSE]
 }
 
 # Stepwise Filtering
